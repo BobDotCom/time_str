@@ -1,9 +1,3 @@
-"""
-time_str
-====================================
-A package to convert strings to datetime.timedelta objects
-"""
-
 import datetime, re
 
 
