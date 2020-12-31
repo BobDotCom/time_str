@@ -1,7 +1,7 @@
 Welcome to time_str's documentation!
 =======================================================
 
-.. automodule:: time_str
+.. automodule:: time_str.convert
    :members:
 
 .. toctree::
