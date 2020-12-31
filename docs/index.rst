@@ -1,7 +1,7 @@
 Welcome to time_str's documentation!
 =======================================================
 .. automodule:: time_str
-    :members:
+   :members:
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
