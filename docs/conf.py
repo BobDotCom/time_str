@@ -12,6 +12,7 @@
 #
 import os
 import sys
+import re
 sys.path.insert(0, os.path.abspath('..'))
 
 
@@ -22,7 +23,10 @@ copyright = '2020, BobDotCom'
 author = 'BobDotCom'
 
 # The full version, including alpha/beta/rc tags
-release = '0.0.2.dev1'
+version = ''
+with open('../time_str/__init__.py') as f:
+    version = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', f.read(), re.MULTILINE).group(1)
+release = version
 
 
 # -- General configuration ---------------------------------------------------
