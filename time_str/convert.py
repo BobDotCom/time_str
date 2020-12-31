@@ -2,18 +2,17 @@ import datetime, re
 
 
 class Converter:
-    """
-    A converter to convert a string to a datetime.datetime object, such as returned by datetime.timedelta.
+    """A converter to convert a string to a :class:`datetime.timedelta` object.
+    The convert method returns a :class:`datetime.timedelta` object
 
-    Attributes:
-        input_string: a string (usually user input) to convert to a datetime object
+    Attributes
+    -----------
+    input_string: :class:`str`
+        A string (usually user input) to convert to a :class:`datetime.timedelta` object.
+        This can be set during initialization.
     """
 
     def __init__(self, input_string):
-        """
-        Initialization for the converter
-        """
-
         self.input_string = input_string
         self.converted_string = None
         self.split_string = []
@@ -38,7 +37,12 @@ class Converter:
 
     def convert(self):
         """
-        The converter itself. Takes the string input from initialization and transforms it into a datetime.datetime object
+        The converter itself. Takes the string input from initialization and transforms it into a :class:`datetime.timedelta` object.
+
+        Returns
+        --------
+        :class:`datetime.timedelta`
+            The converted datetime.timedelta object.
         """
 
         self.converted_string = self.input_string
@@ -56,3 +60,20 @@ class Converter:
         self.raw_output['days'] += 365 * self.raw_output['years'] # datetime.timedelta does not support years
         self.output = datetime.timedelta(seconds=self.raw_output['seconds'], minutes=self.raw_output['minutes'], hours=self.raw_output['hours'], days=self.raw_output['days'], weeks=self.raw_output['weeks'])
         return self.output
+
+def convert(input_string: str):
+    """
+    A shorter way to use the :class:`Converter`. Returns the :class:`datetime.timedelta` object
+
+    Parameters
+    -----------
+    input_string: :class:`str`
+        A string (usually user input) to convert to a :class:`datetime.timedelta` object
+    Returns
+    --------
+    :class:`datetime.timedelta`
+        The converted datetime.timedelta object.
+    """
+    
+    output = Converter(input_string).convert()
+    return output
