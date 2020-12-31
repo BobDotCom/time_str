@@ -1,5 +1,5 @@
 .. time_str documentation master file, created by
-   sphinx-quickstart on Thu Dec 31 06:01:17 2020.
+   sphinx-quickstart on Thu Dec 31 06:32:21 2020.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
