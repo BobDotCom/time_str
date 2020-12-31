@@ -4,8 +4,7 @@ time_str
 A package to convert strings to datetime.timedelta objects
 """
 
-from .convert import Converter
-from .convert import convert
+from time_str.convert import Converter, convert
 
 
 __author__='BobDotCom'
