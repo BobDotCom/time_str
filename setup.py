@@ -35,5 +35,10 @@ setuptools.setup(
     install_requires=[
 
     ],
-    license='MIT'
+    license='MIT',
+    project_urls={
+        'Documentation': 'https://time-str.readthedocs.io/en/latest/index.html',
+        'Source': 'https://github.com/BobDotCom/time_str',
+        'Tracker': 'https://github.com/BobDotCom/time_str/issues',
+    },
 )
