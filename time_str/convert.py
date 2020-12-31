@@ -10,6 +10,10 @@ class Converter:
     """
 
     def __init__(self, input_string):
+        """
+        Initialization for the converter
+        """
+
         self.input_string = input_string
         self.converted_string = None
         self.split_string = []
@@ -33,6 +37,10 @@ class Converter:
         }
 
     def convert(self):
+        """
+        The converter itself. Takes the string input from initialization and transforms it into a datetime.datetime object
+        """
+
         self.converted_string = self.input_string
         for entry in self.pattern:
             regex_pattern = r'(?<=[0-9])\s*(' + '|'.join(self.pattern[entry]) + r')((?=\s)|$)'

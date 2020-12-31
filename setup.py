@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="time_str",
-    version="0.0.1",
+    version="0.0.1.dev1",
     author="BobDotCom",
     author_email="bobdotcomgt@gmail.com",
     description="A package to convert user input into datetime.timedelta objects",
@@ -21,5 +21,6 @@ setuptools.setup(
     python_requires='>=3.6',
     install_requires=[
 
-    ]
+    ],
+    license='MIT'
 )
