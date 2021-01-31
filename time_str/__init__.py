@@ -62,7 +62,10 @@ class Converter:
                     to_add = entry.replace(form,'')
                     if to_add.replace('.','').isdigit():
                         self.raw_output[form] += float(to_add)
-        self.raw_output['days'] += 31 * self.raw_output['months'] # datetime.timedelta does not support months
+        if self.raw_output['months'] > 12:
+            self.raw_output['years'] += self.raw_output['months'] // 12
+            self.raw_output['months'] %= 12
+        self.raw_output['days'] += round(30.5 * self.raw_output['months']) # datetime.timedelta does not support months
         self.raw_output['days'] += 365 * self.raw_output['years'] # datetime.timedelta does not support years
         self.output = datetime.timedelta(seconds=self.raw_output['seconds'], minutes=self.raw_output['minutes'], hours=self.raw_output['hours'], days=self.raw_output['days'], weeks=self.raw_output['weeks'])
         return self.output
@@ -86,5 +89,5 @@ def convert(input_string: str):
 
 
 __author__='BobDotCom'
-__version__='0.0.2'
+__version__='0.0.2.post1'
 
