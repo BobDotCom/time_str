@@ -5,6 +5,7 @@ time_str
 A package to convert user input into datetime.timedelta objects.
 
 PyPI: https://pypi.org/project/dcoder/
+
 Docs: https://time-str.readthedocs.io/en/latest/
 
 Installation
@@ -13,11 +14,12 @@ Installation
 You can install released versions of time_str from the Python Package Index via pip or a similar tool:
 
 **Stable Release:** ``pip install time_str``
+
 **Working Version:** ``pip install git+https://github.com/BobDotCom/time_str.git``
 
 Usage
 ########
-::
+.. code-block:: python
 
     >>> import time_str
     >>> time_str.convert('11 months 9days 1m 3 sec')
