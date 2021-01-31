@@ -23,7 +23,7 @@ setuptools.setup(
     author_email="bobdotcomgt@gmail.com",
     description="A package to convert user input into datetime.timedelta objects",
     long_description=long_description,
-    long_description_content_type="text/markdown",
+    long_description_content_type="text/x-rst",
     url="https://github.com/BobDotCom/time_str",
     packages=setuptools.find_packages(exclude=['tests*','build.py']),
     classifiers=[
