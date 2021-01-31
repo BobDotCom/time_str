@@ -1,8 +1,5 @@
 import setuptools, codecs, os.path
 
-with open("README.rst", "r", encoding="utf-8") as fh:
-    long_description = fh.read()
-
 def read(rel_path):
     here = os.path.abspath(os.path.dirname(__file__))
     with codecs.open(os.path.join(here, rel_path), 'r') as fp:
@@ -16,14 +13,23 @@ def get_version(rel_path):
     else:
         raise RuntimeError("Unable to find version string.")
 
+__version__ = str(get_version("time_str/__init__.py"))
+
+with open("README.rst", "r", encoding="utf-8") as fh:
+    long_description = fh.read().replace("""*****
+Time_str
+*****""",f"""*****{'*' * (len(__version__) + 1)}
+Time_str {__version__}
+*****{'*' * (len(__version__) + 1)}""")
+
 setuptools.setup(
     name="time_str",
-    version=get_version("time_str/__init__.py"),
+    version=__version__,
     author="BobDotCom",
     author_email="bobdotcomgt@gmail.com",
     description="A package to convert user input into datetime.timedelta objects",
     long_description=long_description,
-    # long_description_content_type="text/markdown",
+    long_description_content_type="text/text/x-rst",
     url="https://github.com/BobDotCom/time_str",
     packages=setuptools.find_packages(exclude=['tests*','build.py']),
     classifiers=[

@@ -1,6 +1,6 @@
-*****
-time_str
-*****
+********
+Time_str
+********
 
 A package to convert user input into datetime.timedelta objects.
 
@@ -9,7 +9,7 @@ PyPI: https://pypi.org/project/time-str/
 Docs: https://time-str.readthedocs.io/en/latest/
 
 Installation
-########
+############
 
 You can install released versions of time_str from the Python Package Index via pip or a similar tool:
 
@@ -18,7 +18,7 @@ You can install released versions of time_str from the Python Package Index via 
 **Working Version:** ``pip install git+https://github.com/BobDotCom/time_str.git``
 
 Usage
-########
+#####
 .. code-block:: python
 
     >>> import time_str
