@@ -4,7 +4,7 @@ time_str
 
 A package to convert user input into datetime.timedelta objects.
 
-PyPI: https://pypi.org/project/dcoder/
+PyPI: https://pypi.org/project/time-str/
 
 Docs: https://time-str.readthedocs.io/en/latest/
 
