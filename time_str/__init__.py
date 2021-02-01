@@ -29,7 +29,8 @@ Usage
     datetime.timedelta(days=83, seconds=18180)
 """
 
-import datetime, re
+import datetime
+import re
 
 
 class Converter:
