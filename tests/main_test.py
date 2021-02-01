@@ -1,4 +1,7 @@
-import pytest, time_str, datetime, random
+import pytest
+import time_str
+import datetime
+import random
 
 test = (random.randrange(0,61),random.randrange(0,61),random.randrange(0,25),random.randrange(0,366),random.randrange(0,5),random.randrange(0,13),random.randrange(0,100))
 tests = [test for _ in range(1000)]
