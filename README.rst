@@ -1,5 +1,5 @@
 ********
-Time_str
+Time_Str
 ********
 
 A package to convert user input into datetime.timedelta objects.
