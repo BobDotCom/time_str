@@ -3,10 +3,11 @@ Time_Str
 ********
 
 A package to convert user input into datetime.timedelta objects.
+
 |Status badge|
 
 .. |Status badge| image:: https://github.com/BobDotCom/time_str/workflows/Python%20Package/badge.svg
-   :target: https://github.com/BobDotCom/time_str/workflows/Python%20Package
+   :target: https://github.com/BobDotCom/time_str/actions?query=workflow%3A"Python+Package"
 
 PyPI: https://pypi.org/project/time-str/
 
