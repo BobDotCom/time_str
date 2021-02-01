@@ -29,7 +29,12 @@ Usage
     datetime.timedelta(days=83, seconds=18180)
 """
 
+from .converter import *
 
+__title__ = "time_str"
 __author__='BobDotCom'
 __version__='0.0.3'
+
+__license__ = "MIT License"
+__copyright__ = "Copyright 2021 {}".format(__author__)
 
