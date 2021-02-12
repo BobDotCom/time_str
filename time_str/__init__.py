@@ -114,6 +114,10 @@ def convert(input_string: str):
     return output
 
 
+__title__ = "time_str"
 __author__='BobDotCom'
-__version__='0.0.3.post1'
+__version__='0.0.3.post2'
+
+__license__ = "MIT License"
+__copyright__ = "Copyright 2021 {}".format(__author__)
 
