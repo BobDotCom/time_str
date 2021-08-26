@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+
+getValueFromConfig() {
+    current_version="$(grep "${1}" .bumpversion.cfg  | cut -d '=' -f 2)"
+}
+
+what_to_do(){
+    while true; do
+        printf "Current version: %s (major/minor/patch): " "$(tput bold)$current_version$(tput sgr0)"
+        read ver
+        case $ver in
+            major ) return 1;;
+            minor ) return 2;;
+            patch ) return 3;;
+            * ) echo "Incorrect option";
+        esac
+    done
+}
+
+success() {
+    echo "$(tput setaf 2)$(tput bold)Complete$(tput sgr0)"
+}
+
+getValueFromConfig current_version
+
+what_to_do
+ans="$?"
+
+if [[ $ans == 1 ]];
+then
+    part="major"
+elif [[ $ans == 2 ]];
+then
+    part="minor"
+elif [[ $ans == 3 ]];
+then
+    part="patch"
+fi
+
+verify_intention(){
+    while true; do
+        printf "Are you sure you would like to continue? This will consume a version and is $(tput sgr0)$(tput setaf 1)$(tput bold)irreversible$(tput sgr0) (y/n)? "
+        read yn
+        case $yn in
+            [Yy]* ) return 1;;
+            [Nn]* ) return 0;;
+            * ) echo "Incorrect option (y/n) "; echo;
+        esac
+    done
+}
+
+#confirm before ending
+verify_intention
+if [[ $? == 1 ]];
+then
+    python3 -m bumpversion "$part"
+    git push; git push --tags
+    success
+else
+    echo "$(tput sgr0)$(tput setaf 1)$(tput bold)Exiting$(tput sgr0)"
+fi
