@@ -56,7 +56,8 @@ class Converter:
             'weeks': ['weeks', 'week', 'wks', 'wk', 'w'], 
             'months': ['months', 'month', 'mons', 'mon', 'mn'], 
             'years': ['years', 'year', 'yrs', 'yr', 'y'],
-            'decades': ['decade', 'decades', 'dcd']
+            'decades': ['decade', 'decades', 'dcd'],
+            'centurys': ['century', 'centurys', 'c']
         }
         self.raw_output = {
             'seconds': 0,
@@ -66,7 +67,8 @@ class Converter:
             'weeks': 0, 
             'months': 0, 
             'years': 0,
-            'decades': 0
+            'decades': 0,
+            'centurys': 0
         }
 
     def convert(self):
@@ -95,7 +97,8 @@ class Converter:
             self.raw_output['months'] %= 12
         self.raw_output['days'] += round(30.5 * self.raw_output['months']) # datetime.timedelta does not support months
         self.raw_output['days'] += 365 * self.raw_output['years'] # datetime.timedelta does not support years
-        self.raw_output['days'] += 4380 * self.raw_output['decades']
+        self.raw_output['days'] += 4380 * self.raw_output['decades'] # datetime.timedelta doesnt support decades so we just convert it to days
+        self.raw_output['days'] += 36500 * self.raw_output['centurys'] # datetime.timedelta doesnt support centurys
         self.output = datetime.timedelta(seconds=self.raw_output['seconds'], minutes=self.raw_output['minutes'], hours=self.raw_output['hours'], days=self.raw_output['days'], weeks=self.raw_output['weeks'])
         return self.output
 
