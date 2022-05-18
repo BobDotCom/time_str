@@ -70,10 +70,12 @@ class Converter:
             'decades': 0,
             'centuries': 0
         }
+        self.output = None
 
     def convert(self):
         """
-        The converter itself. Takes the string input from initialization and transforms it into a :class:`datetime.timedelta` object.
+        The converter itself. Takes the string input from initialization and transforms it into a
+        :class:`datetime.timedelta` object.
 
         Returns
         --------
@@ -84,7 +86,7 @@ class Converter:
         self.converted_string = self.input_string
         for entry in self.pattern:
             regex_pattern = r'(?<=[0-9])\s*(' + '|'.join(self.pattern[entry]) + r')((?=\s)|$)'
-            self.converted_string = re.sub(regex_pattern,entry,self.converted_string)
+            self.converted_string = re.sub(regex_pattern, entry, self.converted_string)
         self.split_string = self.converted_string.split(' ')
         for entry in self.split_string:
             for form in self.raw_output:
@@ -95,12 +97,19 @@ class Converter:
         if self.raw_output['months'] > 12:
             self.raw_output['years'] += self.raw_output['months'] // 12
             self.raw_output['months'] %= 12
-        self.raw_output['days'] += round(30.5 * self.raw_output['months']) # datetime.timedelta does not support months
-        self.raw_output['days'] += 365 * self.raw_output['years'] # datetime.timedelta does not support years
-        self.raw_output['days'] += 3650 * self.raw_output['decades'] # datetime.timedelta doesnt support decades so we just convert it to days
-        self.raw_output['days'] += 36500 * self.raw_output['centuries'] # datetime.timedelta doesnt support centurys
-        self.output = datetime.timedelta(seconds=self.raw_output['seconds'], minutes=self.raw_output['minutes'], hours=self.raw_output['hours'], days=self.raw_output['days'], weeks=self.raw_output['weeks'])
+        self.raw_output['days'] += round(30.5 * self.raw_output['months'])
+        self.raw_output['days'] += 365 * self.raw_output['years']
+        self.raw_output['days'] += 3650 * self.raw_output['decades']
+        self.raw_output['days'] += 36500 * self.raw_output['centuries']
+        self.output = datetime.timedelta(
+            seconds=self.raw_output['seconds'],
+            minutes=self.raw_output['minutes'],
+            hours=self.raw_output['hours'],
+            days=self.raw_output['days'],
+            weeks=self.raw_output['weeks']
+        )
         return self.output
+
 
 def convert(input_string: str):
     """
@@ -121,8 +130,8 @@ def convert(input_string: str):
 
 
 __title__ = "time_str"
-__author__='BobDotCom'
-__version__='0.1.0.post2'
+__author__ = 'BobDotCom'
+__version__ = '0.1.0'
 
 __license__ = "MIT License"
 __copyright__ = "Copyright 2021 {}".format(__author__)
