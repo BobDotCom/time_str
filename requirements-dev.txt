@@ -1,0 +1,2 @@
+bumpversion~=0.6.0
+pytest~=7.1.2
