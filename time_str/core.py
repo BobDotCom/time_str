@@ -32,6 +32,8 @@ __all__ = (
     "convert_str",
 )
 
+from typing import Union, Dict, List, Optional
+
 
 class Converter:
     """A converter to convert a string to a :class:`datetime.timedelta` object.
@@ -44,10 +46,10 @@ class Converter:
         This can be set during initialization.
     """
 
-    def __init__(self, input_string):
+    def __init__(self, input_string: str):
         self.input_string = input_string
-        self.converted_string = None
-        self.split_string = []
+        self.converted_string: Optional[str] = None
+        self.split_string: List[str] = []
         self.pattern = {
             'seconds': ['seconds', 'second', 'secs', 'sec', 's'],
             'minutes': ['minutes', 'minute', 'mins', 'min', 'm'],
@@ -59,7 +61,7 @@ class Converter:
             'decades': ['decade', 'decades', 'dcd', 'dec'],
             'centuries': ['century', 'centuries', 'c', 'cen']
         }
-        self.raw_output = {
+        self.raw_output: Dict[str, Union[int, float]] = {
             'seconds': 0,
             'minutes': 0,
             'hours': 0,
@@ -70,9 +72,9 @@ class Converter:
             'decades': 0,
             'centuries': 0
         }
-        self.output = None
+        self.output: Optional[datetime.timedelta] = None
 
-    def convert(self):
+    def convert(self) -> datetime.timedelta:
         """
         The converter itself. Takes the string input from initialization and transforms it into a
         :class:`datetime.timedelta` object.
@@ -111,7 +113,7 @@ class Converter:
         return self.output
 
 
-def convert_str(input_string: str):
+def convert_str(input_string: str) -> datetime.timedelta:
     """
     A shorter way to use the :class:`Converter`. Returns the :class:`datetime.timedelta` object
 
@@ -129,7 +131,7 @@ def convert_str(input_string: str):
     return output
 
 
-def convert(input_string: str):
+def convert(input_string: str) -> datetime.timedelta:
     """
     An alias of :func:`convert_str`
 
