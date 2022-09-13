@@ -98,9 +98,8 @@ class Converter:
                     to_add = entry.replace(form, "")
                     if to_add.replace(".", "").isdigit():
                         self.raw_output[form] += float(to_add)
-        if self.raw_output["months"] > 12:
-            self.raw_output["years"] += self.raw_output["months"] // 12
-            self.raw_output["months"] %= 12
+        self.raw_output["years"] += self.raw_output["months"] // 12
+        self.raw_output["months"] %= 12
         self.raw_output["days"] += round(30.5 * self.raw_output["months"])
         self.raw_output["days"] += 365 * self.raw_output["years"]
         self.raw_output["days"] += 3650 * self.raw_output["decades"]
