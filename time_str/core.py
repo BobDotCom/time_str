@@ -84,8 +84,8 @@ class Converter:
         """
 
         self.converted_string = self.input_string
-        for entry in self.pattern:
-            regex_pattern = r'(?<=[0-9])\s*(' + '|'.join(self.pattern[entry]) + r')((?=\s)|$)'
+        for entry, value in self.pattern.items():
+            regex_pattern = r'(?<=[0-9])\s*(' + '|'.join(value) + r')((?=\s)|$)'
             self.converted_string = re.sub(regex_pattern, entry, self.converted_string)
         self.split_string = self.converted_string.split(' ')
         for entry in self.split_string:

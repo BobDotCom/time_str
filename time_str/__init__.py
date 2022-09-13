@@ -16,4 +16,4 @@ __author__ = 'BobDotCom'
 __version__ = '0.1.1'
 
 __license__ = "MIT License"
-__copyright__ = "Copyright 2021 {}".format(__author__)
+__copyright__ = f"Copyright 2021 {__author__}"
