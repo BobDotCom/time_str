@@ -21,7 +21,7 @@ A package to convert user input into datetime.timedelta objects.
    :target: https://github.com/psf/black
    :alt: Code style: black
 
-.. |Codecov| image:: https://codecov.io/gh/BobDotCom/time_str/branch/main/graph/badge.svg?token=
+.. |Codecov| image:: https://codecov.io/gh/BobDotCom/time_str/branch/main/graph/badge.svg?token=MQGTWTBI5E
    :target: https://codecov.io/gh/BobDotCom/time_str
    :alt: Codecov
 .. |Checks| image:: https://github.com/BobDotCom/time_str/actions/workflows/check.yml/badge.svg
