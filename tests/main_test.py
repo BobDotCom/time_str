@@ -5,24 +5,40 @@ import pytest
 
 import time_str
 
-test = (
-    random.randrange(0, 61),
-    random.randrange(0, 61),
-    random.randrange(0, 25),
-    random.randrange(0, 366),
-    random.randrange(0, 5),
-    random.randrange(0, 13),
-    random.randrange(0, 100),
-    random.randrange(0, 100),
-    random.randrange(0, 10),
+maxes = (
+    62,
+    62,
+    25,
+    366,
+    5,
+    14,
+    100,
+    100,
+    10,
 )
-tests = [test for _ in range(1000)]
+
+
+def make_value() -> tuple[int, int, int, int, int, int, int, int, int]:
+    return (
+        random.randrange(0, maxes[0]),
+        random.randrange(0, maxes[1]),
+        random.randrange(0, maxes[2]),
+        random.randrange(0, maxes[3]),
+        random.randrange(0, maxes[4]),
+        random.randrange(0, maxes[5]),
+        random.randrange(0, maxes[6]),
+        random.randrange(0, maxes[7]),
+        random.randrange(0, maxes[8]),
+    )
+
+
+tests = [make_value() for _ in range(1000)]
 
 
 @pytest.fixture
 def converter():
     """Returns a converter."""
-    return time_str.convert
+    return time_str.convert_str
 
 
 @pytest.mark.parametrize("second,minute,hour,day,week,month,year,decade,century", tests)
@@ -44,9 +60,14 @@ def test_conversions(
         minutes=minute,
         hours=hour,
         days=day
-        + round(30.5 * month)
-        + (365 * year)
+        + round(30.5 * (month % 12))
+        + (365 * (year + (month // 12)))
         + 7 * week
         + 3650 * decade
         + 36500 * century,
     )
+
+
+def test_deprecated():
+    with pytest.warns(DeprecationWarning):
+        assert time_str.convert("1 second") == time_str.convert_str("1 second")
