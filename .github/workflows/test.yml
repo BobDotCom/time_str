@@ -1,0 +1,71 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+# TODO: Cache coverage file and always run upload on PR
+
+name: Unit Tests
+
+on: [push, pull_request]
+
+jobs:
+  pytest:
+    runs-on: ${{ matrix.os }}
+    if:
+      github.event_name == 'push' || github.event.pull_request.head.repo.full_name !=
+      github.repository
+    strategy:
+      matrix:
+        os: [ubuntu-latest] # macos-latest, windows-latest # disabled others to conserve workflow runtime
+        python-version: [3.7, 3.8, 3.9, "3.10"]
+    env:
+      OS: ${{ matrix.os }}
+      PYTHON: ${{ matrix.python-version }}
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: "pip"
+          cache-dependency-path: "requirements-dev.txt"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8
+          pip install -r requirements-dev.txt
+      #    - name: Run setup script
+      #      run: |
+      #        source setup.sh
+      - name: Setup cache
+        id: cache-pytest
+        uses: actions/cache@v3
+        with:
+          path: .pytest_cache
+          key: ${{ matrix.os }}-${{ matrix.python-version }}-pytest
+      - name: Lint with flake8
+        run: |
+          # stop the build if there are Python syntax errors or undefined names
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          # exit-zero treats all errors as warnings.
+          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=120 --statistics
+      #    - name: Prep storage
+      #      run: |
+      #        if [ ! -d storage ]; then mkdir storage; fi
+      #        if [ ! -f storage/main.db ]; then touch storage/main.db; fi
+      #    - name: Prep environment
+      #      run: |
+      #        if [ ! -f .env ]; then touch .env; fi
+      #        echo "SECRET_KEY=$(openssl rand -hex 32)" >> .env
+      - name: Run code coverage with pytest
+        run: |
+          coverage run -m pytest
+          coverage xml
+      - name: Upload code coverage to codecov.io
+        uses: codecov/codecov-action@v3
+        with:
+          env_vars: OS,PYTHON
+          files: ./coverage.xml
+          flags: unittests # optional
+          name: codecov-umbrella # optional
+          fail_ci_if_error: true # optional (default = false)
+          verbose: true # optional (default = false)

@@ -1,0 +1,14 @@
+[MASTER]
+extension-pkg-whitelist=pydantic,ujson
+
+[MESSAGES CONTROL]
+
+enable=bad-indentation,line-too-long
+disable=missing-module-docstring,too-few-public-methods,fixme
+
+
+[FORMAT]
+
+indent-string='    '
+
+max-line-length=120

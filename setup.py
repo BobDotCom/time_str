@@ -1,15 +1,33 @@
+"""
+Setup file
+"""
 import re
+from typing import List
 
-from setuptools import setup
+from setuptools import setup  # type: ignore
 # Requirements
 
-with open("requirements.txt", "r", encoding="utf-8") as f:
-    requirements = f.read().splitlines()
 
+def get_requirements(filename: str = "requirements.txt") -> List[str]:
+    """
+    Get the requirements from a file.
+    """
+    with open(filename, "r", encoding="utf-8") as f:
+        content = f.read().splitlines()
+        for line in content:
+            if line.startswith("#"):
+                content.remove(line)
+            elif line.startswith("-r"):
+                content.remove(line)
+                content.extend(get_requirements(line[3:]))
+    return content
+
+
+requirements = get_requirements()
 
 # Version Info
 version = ""
-with open("time_str/__init__.py") as f:
+with open("time_str/__init__.py", "r", encoding="utf-8") as f:
 
     search = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', f.read(), re.MULTILINE)
 
@@ -27,23 +45,23 @@ if version.endswith(("a", "b", "rc")):
     try:
         import subprocess
 
-        p = subprocess.Popen(
+        with subprocess.Popen(
             ["git", "rev-list", "--count", "HEAD"],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
-        )
-        out, err = p.communicate()
+        ) as p:
+            out, err = p.communicate()
         if out:
             version += out.decode("utf-8").strip()
-        p = subprocess.Popen(
+        with subprocess.Popen(
             ["git", "rev-parse", "--short", "HEAD"],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
-        )
-        out, err = p.communicate()
+        ) as p:
+            out, err = p.communicate()
         if out:
             version += f"+g{out.decode('utf-8').strip()}"
-    except Exception:
+    except Exception:  # pylint: disable=broad-except
         pass
 
 with open("README.rst", "r", encoding="utf-8") as fh:
@@ -55,10 +73,11 @@ packages = [
 ]
 
 extras_require = {
-    "docs": [
-        "sphinx_rtd_theme==1.0.0",
-    ],
+    "docs": get_requirements("docs/requirements.txt"),
+    "dev": get_requirements("requirements-dev.txt"),
 }
+
+extras_require["all"] = list(set(sum(extras_require.values(), [])))
 
 setup(
     name="time_str",
