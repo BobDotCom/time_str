@@ -24,6 +24,6 @@ Converter Class
 Shortcut Functions
 ~~~~~~~~~~~~~~~~~~
 
-.. autofunction:: convert_str
+.. autofunction:: convert_timedelta
 
 .. autofunction:: convert

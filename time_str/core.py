@@ -28,7 +28,7 @@ import warnings
 __all__ = (
     "convert",
     "Converter",
-    "convert_str",
+    "convert_timedelta",
 )
 
 from typing import Dict, List, Optional, Union
@@ -114,7 +114,7 @@ class Converter:
         return self.output
 
 
-def convert_str(input_string: str) -> datetime.timedelta:
+def convert_timedelta(input_string: str) -> datetime.timedelta:
     """
     A shorter way to use the :class:`Converter`.
 
@@ -139,7 +139,8 @@ def convert(input_string: str) -> datetime.timedelta:
     An alias of :func:`convert_str`.
 
     .. deprecated:: 0.2.0
-        The convert function is deprecated since 0.2.0 and will be removed in 1.0.0. Use convert_str instead.
+        The convert function is deprecated since 0.2.0 and will be removed in 1.0.0. Use :func:`convert_timedelta`
+        instead.
 
     Parameters
     -----------
@@ -156,4 +157,4 @@ def convert(input_string: str) -> datetime.timedelta:
         stacklevel=2,
     )
 
-    return convert_str(input_string)
+    return convert_timedelta(input_string)

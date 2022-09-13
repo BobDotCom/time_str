@@ -39,7 +39,7 @@ tests = [make_value() for _ in range(1000)]
 @pytest.fixture
 def converter():
     """Returns a converter."""
-    return time_str.convert_str
+    return time_str.convert_timedelta
 
 
 @pytest.mark.parametrize("second,minute,hour,day,week,month,year,decade,century", tests)
@@ -71,4 +71,4 @@ def test_conversions(
 
 def test_deprecated():
     with pytest.warns(DeprecationWarning):
-        assert time_str.convert("1 second") == time_str.convert_str("1 second")
+        assert time_str.convert("1 second") == time_str.convert_timedelta("1 second")
