@@ -40,7 +40,7 @@ jobs:
       #          echo "enable=fixme" >> .pylintrc
       - name: Analyse code with pylint
         run: |
-          pylint bftools/
+          pylint time_str/
   mypy:
     runs-on: ${{ matrix.os }}
     if:
@@ -74,4 +74,4 @@ jobs:
         if: steps.cache-mypy.outputs.cache-hit != 'true'
         run: mkdir --parents --verbose .mypy_cache
       - name: Run type checks with Mypy
-        run: mypy --non-interactive bftools/
+        run: mypy --non-interactive time_str/
