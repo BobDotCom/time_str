@@ -1,8 +1,9 @@
-import pytest
-import time_str
 import datetime
 import random
 
+import pytest
+
+import time_str
 
 test = (
     random.randrange(0, 61),
@@ -13,19 +14,21 @@ test = (
     random.randrange(0, 13),
     random.randrange(0, 100),
     random.randrange(0, 100),
-    random.randrange(0, 10)
+    random.randrange(0, 10),
 )
 tests = [test for _ in range(1000)]
 
 
 @pytest.fixture
 def converter():
-    """Returns a converter"""
+    """Returns a converter."""
     return time_str.convert
 
 
 @pytest.mark.parametrize("second,minute,hour,day,week,month,year,decade,century", tests)
-def test_conversions(converter, second, minute, hour, day, week, month, year, decade, century):
+def test_conversions(
+    converter, second, minute, hour, day, week, month, year, decade, century
+):
     assert converter(
         f"{second} {random.choice(['seconds', 'second', 'secs', 'sec', 's'])} "
         f"{minute} {random.choice(['minutes', 'minute', 'mins', 'min', 'm'])} "
@@ -40,5 +43,10 @@ def test_conversions(converter, second, minute, hour, day, week, month, year, de
         seconds=second,
         minutes=minute,
         hours=hour,
-        days=day + round(30.5 * month) + (365 * year) + 7 * week + 3650 * decade + 36500 * century
+        days=day
+        + round(30.5 * month)
+        + (365 * year)
+        + 7 * week
+        + 3650 * decade
+        + 36500 * century,
     )

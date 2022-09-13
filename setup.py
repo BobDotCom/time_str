@@ -1,18 +1,15 @@
-"""
-Setup file
-"""
+"""Setup file."""
 import re
 from typing import List
 
 from setuptools import setup  # type: ignore
+
 # Requirements
 
 
 def get_requirements(filename: str = "requirements.txt") -> List[str]:
-    """
-    Get the requirements from a file.
-    """
-    with open(filename, "r", encoding="utf-8") as f:
+    """Get the requirements from a file."""
+    with open(filename, encoding="utf-8") as f:
         content = f.read().splitlines()
         for line in content:
             if line.startswith("#"):
@@ -27,9 +24,11 @@ requirements = get_requirements()
 
 # Version Info
 version = ""
-with open("time_str/__init__.py", "r", encoding="utf-8") as f:
+with open("time_str/__init__.py", encoding="utf-8") as f:
 
-    search = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', f.read(), re.MULTILINE)
+    search = re.search(
+        r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', f.read(), re.MULTILINE
+    )
 
     if search is not None:
         version = search.group(1)
@@ -64,7 +63,7 @@ if version.endswith(("a", "b", "rc")):
     except Exception:  # pylint: disable=broad-except
         pass
 
-with open("README.rst", "r", encoding="utf-8") as fh:
+with open("README.rst", encoding="utf-8") as fh:
     long_description = fh.read()
 
 
@@ -104,13 +103,13 @@ setup(
         "Topic :: Utilities",
         "Typing :: Typed",
     ],
-    python_requires='>=3.7',
+    python_requires=">=3.7",
     install_requires=requirements,
     extras_require=extras_require,
-    license='MIT',
+    license="MIT",
     project_urls={
-        'Documentation': 'https://time-str.readthedocs.io/en/latest/index.html',
-        'Source': 'https://github.com/BobDotCom/time_str',
-        'Tracker': 'https://github.com/BobDotCom/time_str/issues',
+        "Documentation": "https://time-str.readthedocs.io/en/latest/index.html",
+        "Source": "https://github.com/BobDotCom/time_str",
+        "Tracker": "https://github.com/BobDotCom/time_str/issues",
     },
 )
