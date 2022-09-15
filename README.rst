@@ -4,7 +4,7 @@ Time_Str
 
 |Mypy| |Pylint| |Black|
 
-|Codecov| |Checks| |Lint| |Tests|
+|Codecov| |Checks| |Lint| |Tests| |Pre-commit|
 
 |PyPI| |Versions| |Docs badge| |Downloads badge| |GitHub|
 
@@ -33,6 +33,9 @@ A package to convert user input into datetime.timedelta objects.
 .. |Tests| image:: https://github.com/BobDotCom/time_Str/actions/workflows/test.yml/badge.svg
    :target: https://github.com/BobDotCom/time_str/actions/workflows/test.yml
    :alt: Unit Tests
+.. |Pre-commit| image:: https://results.pre-commit.ci/badge/github/BobDotCom/time_str/main.svg
+   :target: https://results.pre-commit.ci/latest/github/BobDotCom/time_str/main
+   :alt: pre-commit.ci status
 
 .. |PyPI| image:: https://img.shields.io/pypi/v/time_str.svg?logo=pypi&color=yellowgreen&logoColor=white
    :target: https://pypi.python.org/pypi/time_str
