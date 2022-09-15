@@ -70,8 +70,9 @@ Usage
 .. code-block:: python
 
     import time_str
-    print(time_str.convert('11 months 9days 1m 3 sec'))
-    print(time_str.convert('2 months 3w 1 d 5hour 3 min'))
+    converter = Converter('11 months 9days 1m 3 sec')
+    print(converter.timedelta_precise())
+    print(converter.datetime_precise())
 
 Manuals
 -------

@@ -1,7 +1,7 @@
 """
 MIT License.
 
-Copyright (c) 2021 BobDotCom
+Copyright (c) 2020 BobDotCom
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -22,139 +22,216 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 import datetime
+import functools
 import re
-import warnings
 
 __all__ = (
-    "convert",
-    "Converter",
-    "convert_timedelta",
+    "IntervalConverter",
+    "parse_interval",
 )
 
-from typing import Dict, List, Optional, Union
+from typing import Dict, List, Literal, Union
+
+Unit = Literal[
+    "seconds",
+    "minutes",
+    "hours",
+    "days",
+    "weeks",
+    "months",
+    "years",
+    "decades",
+    "centuries",
+]
 
 
-class Converter:
-    """A converter to convert a string to a :class:`datetime.timedelta` object.
+class IntervalConverter:
+    """A converter to parse user input representing an amount of time into :class:`datetime.datetime` and
+    :class:`datetime.timedelta` objects.
 
-    The convert method returns a :class:`datetime.timedelta` object
-
-    Attributes
-    -----------
+    Parameters
+    ----------
     input_string: :class:`str`
-        A string (usually user input) to convert to a :class:`datetime.timedelta` object.
-        This can be set during initialization.
+        A string (usually user input) to be converted.
+    max_unit: Literal["seconds", "minutes", "hours", "days", "weeks", "months", "years", "decades", "centuries"]
+        The maximum unit to convert to. Defaults to "centuries".
     """
 
-    def __init__(self, input_string: str):
-        self.input_string = input_string
-        self.converted_string: Optional[str] = None
-        self.split_string: List[str] = []
-        self.pattern = {
-            "seconds": ["seconds", "second", "secs", "sec", "s"],
-            "minutes": ["minutes", "minute", "mins", "min", "m"],
-            "hours": ["hours", "hour", "hrs", "hr", "h"],
-            "days": ["days", "day", "dys", "dy", "d"],
-            "weeks": ["weeks", "week", "wks", "wk", "w"],
-            "months": ["months", "month", "mons", "mon", "mn"],
-            "years": ["years", "year", "yrs", "yr", "y"],
-            "decades": ["decade", "decades", "dcd", "dec"],
-            "centuries": ["century", "centuries", "c", "cen"],
-        }
-        self.raw_output: Dict[str, Union[int, float]] = {
-            "seconds": 0,
-            "minutes": 0,
-            "hours": 0,
-            "days": 0,
-            "weeks": 0,
-            "months": 0,
-            "years": 0,
-            "decades": 0,
-            "centuries": 0,
-        }
-        self.output: Optional[datetime.timedelta] = None
+    _pattern: Dict[Unit, List[str]] = {
+        "seconds": ["seconds", "second", "secs", "sec", "s"],
+        "minutes": ["minutes", "minute", "mins", "min", "m"],
+        "hours": ["hours", "hour", "hrs", "hr", "h"],
+        "days": ["days", "day", "dys", "dy", "d"],
+        "weeks": ["weeks", "week", "wks", "wk", "w"],
+        "months": ["months", "month", "mons", "mon", "mn"],
+        "years": ["years", "year", "yrs", "yr", "y"],
+        "decades": ["decade", "decades", "dcd", "dec"],
+        "centuries": ["century", "centuries", "c", "cen"],
+    }
 
-    def convert(self) -> datetime.timedelta:
+    def __init__(
+        self,
+        input_string: str,
+        max_unit: Unit = "centuries",
+    ) -> None:
+        self._now = datetime.datetime.now()
+        self._input_string = input_string
+        self._converted_string: str
+        if max_unit not in self._pattern:
+            raise ValueError(
+                "Invalid unit. Must be one of: " + ", ".join(self._pattern.keys())
+            )
+        self._max_unit = max_unit
+        self._parsed_data: Dict[str, Union[int, float]] = {}
+        for unit in self._pattern:
+            self._parsed_data[unit] = 0
+            if unit == max_unit:
+                break
+        self._parse_input()
+
+    @property
+    def input_string(self) -> str:
+        """A string (usually user input) to be converted."""
+        return self._input_string
+
+    @property
+    def converted_string(self) -> str:
+        """A sanitized version of the input string."""
+        return self._converted_string
+
+    def _data_val(self, unit: Unit) -> Union[int, float]:
+        return self._parsed_data.get(unit, 0)
+
+    def _parse_input(self) -> None:
+        converted_string = self.input_string
+        for entry, value in self._pattern.items():
+            regex_pattern = r"(?<=[0-9])\s*(" + "|".join(value) + r")((?=\s)|$)"
+            converted_string = re.sub(regex_pattern, entry, converted_string)
+        split_string = converted_string.split(" ")
+        for part in split_string:
+            for form in self._parsed_data:
+                if form in part:
+                    to_add = part.replace(form, "")
+                    if to_add.replace(".", "").isdigit():
+                        self._parsed_data[form] += float(to_add)
+        self._converted_string = converted_string
+
+    @functools.lru_cache
+    def datetime_precise(self) -> datetime.datetime:
         """
-        The converter itself.
+        A precise converter that uses the current system time, and accounts for conditional changes such as leap years,
+        and months with varying days.
 
-        Takes the string input from initialization and transforms it into a
-        :class:`datetime.timedelta` object.
+        .. note::
+            The return value of this method is cached, so it will always return the same value when called on the same
+            instance. However, it may return a different result when called at different times across multiple objects.
+            This is because the current system time when the parent object was created is used to calculate the result.
+
+        Returns
+        --------
+        :class:`datetime.datetime`
+            A datetime object representing the parsed time.
+        """
+        years, months = divmod(self._data_val("months") + self._now.month, 12)
+        years += self._data_val("years")
+        years += self._data_val("decades") * 10
+        years += self._data_val("centuries") * 100
+
+        if months == 0:
+            months = 12
+            years -= 1
+
+        return self._now.replace(
+            month=int(months),
+            year=self._now.year + int(years),
+        ) + datetime.timedelta(
+            seconds=self._data_val("seconds"),
+            minutes=self._data_val("minutes"),
+            hours=self._data_val("hours"),
+            days=self._data_val("days"),
+            weeks=self._data_val("weeks"),
+        )
+
+    @functools.lru_cache
+    def datetime_relative(self) -> datetime.datetime:
+        """
+        A relative converter that doesn't take leap years into account and uses rounded values for months.
+
+        .. note::
+            It is almost always recommended to use :meth:`datetime_precise` instead.
+
+        .. note::
+            The return value of this method is cached, so it will always return the same value when called on the same
+            instance. However, it may return a different result when called at different times across multiple objects.
+            This is because the current system time when the parent object was created is used to calculate the result.
+
+        Returns
+        --------
+        :class:`datetime.datetime`
+            A datetime object representing the parsed time.
+        """
+        return self._now + self.timedelta_relative()
+
+    @functools.lru_cache
+    def timedelta_precise(self) -> datetime.timedelta:
+        """
+        A precise converter that uses the current system time, and accounts for conditional changes such as leap years,
+        and months with varying days.
+
+        .. note::
+            The return value of this method is cached, so it will always return the same value when called on the same
+            instance. However, it may return a different result when called at different times across multiple objects.
+            This is because the current system time when the parent object was created is used to calculate the result.
 
         Returns
         --------
         :class:`datetime.timedelta`
-            The converted datetime.timedelta object.
+            A timedelta object representing the parsed amount of time.
         """
+        return self.datetime_precise() - self._now
 
-        self.converted_string = self.input_string
-        for entry, value in self.pattern.items():
-            regex_pattern = r"(?<=[0-9])\s*(" + "|".join(value) + r")((?=\s)|$)"
-            self.converted_string = re.sub(regex_pattern, entry, self.converted_string)
-        self.split_string = self.converted_string.split(" ")
-        for entry in self.split_string:
-            for form in self.raw_output:
-                if form in entry:
-                    to_add = entry.replace(form, "")
-                    if to_add.replace(".", "").isdigit():
-                        self.raw_output[form] += float(to_add)
-        self.raw_output["years"] += self.raw_output["months"] // 12
-        self.raw_output["months"] %= 12
-        self.raw_output["days"] += round(30.5 * self.raw_output["months"])
-        self.raw_output["days"] += 365 * self.raw_output["years"]
-        self.raw_output["days"] += 3650 * self.raw_output["decades"]
-        self.raw_output["days"] += 36500 * self.raw_output["centuries"]
-        self.output = datetime.timedelta(
-            seconds=self.raw_output["seconds"],
-            minutes=self.raw_output["minutes"],
-            hours=self.raw_output["hours"],
-            days=self.raw_output["days"],
-            weeks=self.raw_output["weeks"],
+    @functools.lru_cache
+    def timedelta_relative(self) -> datetime.timedelta:
+        """
+        A relative converter that doesn't take leap years into account and uses rounded values for months.
+
+        .. note::
+            Unless you cannot rely on system time or need a static return value, you should use
+            :meth:`timedelta_precise` instead.
+
+        Returns
+        --------
+        :class:`datetime.timedelta`
+            A timedelta object representing the parsed amount of time.
+        """
+        days = self._data_val("days")
+        days += round(30.5 * (self._data_val("months") % 12))
+        years = self._data_val("years")
+        years += self._data_val("decades") * 10
+        years += self._data_val("centuries") * 100
+        years += self._data_val("months") // 12
+        days += years * 365
+        return datetime.timedelta(
+            seconds=self._data_val("seconds"),
+            minutes=self._data_val("minutes"),
+            hours=self._data_val("hours"),
+            days=days,
+            weeks=self._data_val("weeks"),
         )
-        return self.output
 
 
-def convert_timedelta(input_string: str) -> datetime.timedelta:
+def parse_interval(interval: str) -> IntervalConverter:
     """
-    A shorter way to use the :class:`Converter`.
-
-    Returns the :class:`datetime.timedelta` object
+    A shortcut function for :class:`IntervalConverter`.
 
     Parameters
     -----------
-    input_string: :class:`str`
-        A string (usually user input) to convert to a :class:`datetime.timedelta` object
+    interval: :class:`str`
+        The string to parse.
+
     Returns
     --------
-    :class:`datetime.timedelta`
-        The converted datetime.timedelta object.
+    :class:`IntervalConverter`
+        A converter object.
     """
-
-    output = Converter(input_string).convert()
-    return output
-
-
-def convert(input_string: str) -> datetime.timedelta:
-    """
-    An alias of :func:`convert_str`.
-
-    .. deprecated:: 0.2.0
-        The convert function is deprecated since 0.2.0 and will be removed in 1.0.0. Use :func:`convert_timedelta`
-        instead.
-
-    Parameters
-    -----------
-    input_string: :class:`str`
-        A string (usually user input) to convert to a :class:`datetime.timedelta` object
-    Returns
-    --------
-    :class:`datetime.timedelta`
-        The converted datetime.timedelta object.
-    """
-    warnings.warn(
-        "The convert function is deprecated since 0.2.0 and will be removed in 1.0.0. Use convert_str instead.",
-        DeprecationWarning,
-        stacklevel=2,
-    )
-
-    return convert_timedelta(input_string)
+    return IntervalConverter(interval)

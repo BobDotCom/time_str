@@ -36,17 +36,41 @@ def make_value() -> Tuple[int, ...]:
 tests = [make_value() for _ in range(1000)]
 
 
+def precise_conversion(
+    converter, second, minute, hour, day, week, month, year, decade, century
+):
+    years, months = divmod(converter._now.month + month, 12)
+    years += year
+    years += decade * 10
+    years += century * 100
+
+    if months == 0:
+        months = 12
+        years -= 1
+
+    return converter._now.replace(
+        month=int(months),
+        year=converter._now.year + int(years),
+    ) + datetime.timedelta(
+        seconds=second,
+        minutes=minute,
+        hours=hour,
+        days=day,
+        weeks=week,
+    )
+
+
 @pytest.fixture
 def converter():
     """Returns a converter."""
-    return time_str.convert_timedelta
+    return time_str.parse_interval
 
 
 @pytest.mark.parametrize("second,minute,hour,day,week,month,year,decade,century", tests)
 def test_conversions(
     converter, second, minute, hour, day, week, month, year, decade, century
 ):
-    assert converter(
+    result = converter(
         f"{second} {random.choice(['seconds', 'second', 'secs', 'sec', 's'])} "
         f"{minute} {random.choice(['minutes', 'minute', 'mins', 'min', 'm'])} "
         f"{hour} {random.choice(['hours', 'hour', 'hrs', 'hr', 'h'])} "
@@ -56,7 +80,8 @@ def test_conversions(
         f"{year} {random.choice(['years', 'year', 'yrs', 'yr', 'y'])} "
         f"{decade} {random.choice(['decade', 'decades', 'dcd', 'dec'])} "
         f"{century} {random.choice(['century', 'centuries', 'c', 'cen'])}"
-    ) == datetime.timedelta(
+    )
+    relative = datetime.timedelta(
         seconds=second,
         minutes=minute,
         hours=hour,
@@ -67,8 +92,10 @@ def test_conversions(
         + 3650 * decade
         + 36500 * century,
     )
-
-
-def test_deprecated():
-    with pytest.warns(DeprecationWarning):
-        assert time_str.convert("1 second") == time_str.convert_timedelta("1 second")
+    assert result.timedelta_relative() == relative
+    assert result.datetime_relative() == result._now + relative
+    precise = precise_conversion(
+        result, second, minute, hour, day, week, month, year, decade, century
+    )
+    assert result.datetime_precise() == precise
+    assert result.timedelta_precise() == precise - result._now

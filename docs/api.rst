@@ -15,15 +15,14 @@ Core Utilities
 These provide the main functionality of time_str.
 
 
-Converter Class
-~~~~~~~~~~~~~~~
-
-.. autoclass:: Converter
-   :members:
-
 Shortcut Functions
 ~~~~~~~~~~~~~~~~~~
 
-.. autofunction:: convert_timedelta
+.. autofunction:: parse_interval
 
-.. autofunction:: convert
+
+Converter Classes
+~~~~~~~~~~~~~~~~~
+
+.. autoclass:: IntervalConverter
+   :members:
