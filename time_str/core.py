@@ -123,7 +123,7 @@ class IntervalConverter:
                         self._parsed_data[form] += float(to_add)
         self._converted_string = converted_string
 
-    @functools.lru_cache
+    @functools.lru_cache()
     def datetime_precise(self) -> datetime.datetime:
         """
         A precise converter that uses the current system time, and accounts for conditional changes such as leap years,
@@ -159,7 +159,7 @@ class IntervalConverter:
             weeks=self._data_val("weeks"),
         )
 
-    @functools.lru_cache
+    @functools.lru_cache()
     def datetime_relative(self) -> datetime.datetime:
         """
         A relative converter that doesn't take leap years into account and uses rounded values for months.
@@ -179,7 +179,7 @@ class IntervalConverter:
         """
         return self._now + self.timedelta_relative()
 
-    @functools.lru_cache
+    @functools.lru_cache()
     def timedelta_precise(self) -> datetime.timedelta:
         """
         A precise converter that uses the current system time, and accounts for conditional changes such as leap years,
@@ -197,7 +197,7 @@ class IntervalConverter:
         """
         return self.datetime_precise() - self._now
 
-    @functools.lru_cache
+    @functools.lru_cache()
     def timedelta_relative(self) -> datetime.timedelta:
         """
         A relative converter that doesn't take leap years into account and uses rounded values for months.
