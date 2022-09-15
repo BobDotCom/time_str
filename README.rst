@@ -67,8 +67,7 @@ Usage
 #####
 .. code-block:: python
 
-    >>> import time_str
-    >>> time_str.convert('11 months 9days 1m 3 sec')
-    datetime.timedelta(days=345, seconds=63)
-    >>> time_str.convert('2 months 3w 1 d 5hour 3 min')
-    datetime.timedelta(days=83, seconds=18180)
+    import time_str
+    converter = Converter('11 months 9days 1m 3 sec')
+    print(converter.timedelta_precise())
+    print(converter.datetime_precise())
