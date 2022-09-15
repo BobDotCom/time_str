@@ -24,6 +24,7 @@ SOFTWARE.
 import datetime
 import functools
 import re
+import sys
 
 __all__ = (
     "IntervalConverter",
@@ -32,11 +33,9 @@ __all__ = (
 
 from typing import Dict, List, Union
 
-try:
-    # Python 3.8 and above
+if sys.version_info >= (3, 8):
     from typing import Literal
-except ImportError:  # pragma: no cover
-    # Python 3.7 and below
+else:  # pragma: no cover
     from typing_extensions import Literal
 
 Unit = Literal[
