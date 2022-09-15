@@ -30,7 +30,14 @@ __all__ = (
     "parse_interval",
 )
 
-from typing import Dict, List, Literal, Union
+from typing import Dict, List, Union
+
+try:
+    # Python 3.8 and above
+    from typing import Literal
+except ImportError:  # pragma: no cover
+    # Python 3.7 and below
+    from typing_extensions import Literal
 
 Unit = Literal[
     "seconds",
