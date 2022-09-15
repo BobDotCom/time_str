@@ -5,6 +5,7 @@ from typing import Tuple
 import pytest
 
 import time_str
+from time_str import IntervalConverter
 
 maxes = (
     62,
@@ -99,3 +100,8 @@ def test_conversions(
     )
     assert result.datetime_precise() == precise
     assert result.timedelta_precise() == precise - result._now
+
+
+def test_invalid_unit():
+    with pytest.raises(ValueError):
+        IntervalConverter("", max_unit="invalid")  # type: ignore
