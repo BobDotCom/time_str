@@ -221,7 +221,7 @@ class IntervalConverter:
         )
 
 
-def parse_interval(interval: str) -> IntervalConverter:
+def parse_interval(interval: str, max_unit: Unit = "centuries") -> IntervalConverter:
     """
     A shortcut function for :class:`IntervalConverter`.
 
@@ -229,10 +229,12 @@ def parse_interval(interval: str) -> IntervalConverter:
     -----------
     interval: :class:`str`
         The string to parse.
+    max_unit: Literal["seconds", "minutes", "hours", "days", "weeks", "months", "years", "decades", "centuries"]
+        The maximum unit to parse to. Defaults to ``"centuries"``.
 
     Returns
     --------
     :class:`IntervalConverter`
         A converter object.
     """
-    return IntervalConverter(interval)
+    return IntervalConverter(interval, max_unit)
