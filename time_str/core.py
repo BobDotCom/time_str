@@ -100,11 +100,6 @@ class IntervalConverter:
         """A string (usually user input) to be converted."""
         return self._input_string
 
-    @property
-    def converted_string(self) -> str:
-        """A sanitized version of the input string."""
-        return self._converted_string
-
     def _data_val(self, unit: Unit) -> Union[int, float]:
         return self._parsed_data.get(unit, 0)
 
