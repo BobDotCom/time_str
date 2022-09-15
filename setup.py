@@ -112,4 +112,5 @@ setup(
         "Source": "https://github.com/BobDotCom/time_str",
         "Tracker": "https://github.com/BobDotCom/time_str/issues",
     },
+    include_package_data=True,
 )
