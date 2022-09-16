@@ -9,8 +9,8 @@ from setuptools import setup  # type: ignore
 
 def get_requirements(filename: str = "requirements.txt") -> List[str]:
     """Get the requirements from a file."""
-    with open(filename, encoding="utf-8") as f:
-        content = f.read().splitlines()
+    with open(filename, encoding="utf-8") as file:
+        content = file.read().splitlines()
         for line in content:
             if line.startswith("#"):
                 content.remove(line)
