@@ -108,7 +108,8 @@ setup(
     extras_require=extras_require,
     license="MIT",
     project_urls={
-        "Documentation": "https://time-str.readthedocs.io/en/latest/index.html",
+        "Changelog": "https://github.com/BobDotCom/time_str/blob/main/CHANGELOG.rst",
+        "Documentation": "https://time-str.rtfd.io/",
         "Source": "https://github.com/BobDotCom/time_str",
         "Tracker": "https://github.com/BobDotCom/time_str/issues",
     },
