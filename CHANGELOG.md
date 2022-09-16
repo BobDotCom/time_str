@@ -8,6 +8,8 @@ v1.0.0.
 
 ## [Unreleased]
 
+## [1.0.0] - 2022-09-15
+
 ### Added
 
 - `parse_interval` shortcut function.
@@ -86,7 +88,8 @@ No notable changes.
 
 - Converter class
 
-[unreleased]: https://github.com/BobDotCom/time_str/compare/v0.1.1...HEAD
+[unreleased]: https://github.com/BobDotCom/time_str/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/BobDotCom/time_str/compare/v0.1.1...v1.0.0
 [0.1.1]: https://github.com/BobDotCom/time_str/compare/v0.1.0-post.2...v0.1.1
 [0.1.0-post.2]:
   https://github.com/BobDotCom/time_str/compare/v0.0.3-post.1...v0.1.0-post.2
