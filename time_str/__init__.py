@@ -131,8 +131,8 @@ def convert(input_string: str):
 
 __title__ = "time_str"
 __author__ = 'BobDotCom'
-__version__ = '0.1.1'
+__version__ = '0.1.2'
 
 __license__ = "MIT License"
-__copyright__ = "Copyright 2021 {}".format(__author__)
+__copyright__ = "Copyright 2020 {}".format(__author__)
 
