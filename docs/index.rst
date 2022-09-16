@@ -55,7 +55,7 @@ A package to convert user input into datetime.timedelta objects.
    :alt: Latest release
 
 
-PyPI: https://pypi.org/project/time_Str/
+PyPI: https://pypi.org/project/time_str/
 
 Docs: https://time-str.rtfd.io/
 
