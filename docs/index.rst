@@ -73,7 +73,7 @@ Usage
 .. code-block:: python
 
     import time_str
-    converter = Converter('11 months 9days 1m 3 sec')
+    converter = IntervalConverter('11 months 9days 1m 3 sec')
     print(converter.timedelta_precise())
     print(converter.datetime_precise())
 
