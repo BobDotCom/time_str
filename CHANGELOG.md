@@ -22,6 +22,7 @@ v1.0.0.
 - Renamed `Converter` to `IntervalConverter`.
 - `input_string` attribute of `IntervalConverter` is now a read-only property.
 - `IntervalConverter.convert()` is now `IntervalConverter.timedelta_relative()`.
+- Dropped support for python 3.6
 
 ### Removed
 
