@@ -9,7 +9,7 @@ A package to convert user input into datetime.timedelta objects.
 :license: MIT, see LICENSE for more details.
 """
 
-from .core import *
+from .interval import *
 
 __title__ = "time_str"
 __author__ = "BobDotCom"
