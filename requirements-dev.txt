@@ -1,6 +1,6 @@
 -r requirements.txt
 pytest==7.1.3
 pylint==2.15.3
-mypy==0.981
+mypy==0.982
 coverage==6.5.0
 pre-commit==2.20.0
