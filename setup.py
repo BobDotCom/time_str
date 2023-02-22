@@ -25,7 +25,6 @@ requirements = get_requirements()
 # Version Info
 version = ""
 with open("time_str/__init__.py", encoding="utf-8") as f:
-
     search = re.search(
         r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', f.read(), re.MULTILINE
     )
