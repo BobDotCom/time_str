@@ -6,6 +6,7 @@ import pytest
 
 import time_str
 from time_str import IntervalConverter
+from time_str.interval import _days_in_month
 
 maxes = (
     62,
@@ -49,9 +50,17 @@ def precise_conversion(
         months = 12
         years -= 1
 
+    years += converter._now.year
+
+    if _days_in_month(int(years), int(months)) < converter._now.day:
+        months += 1
+        if months == 13:
+            months = 1
+            years += 1
+
     return converter._now.replace(
         month=int(months),
-        year=converter._now.year + int(years),
+        year=int(years),
     ) + datetime.timedelta(
         seconds=second,
         minutes=minute,
