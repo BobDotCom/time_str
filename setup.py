@@ -1,116 +1,28 @@
-"""Setup file."""
-import re
-from typing import List
+"""
+MIT License.
 
-from setuptools import setup  # type: ignore
+Copyright (c) 2020 BobDotCom
 
-# Requirements
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-def get_requirements(filename: str = "requirements.txt") -> List[str]:
-    """Get the requirements from a file."""
-    with open(filename, encoding="utf-8") as file:
-        content = file.read().splitlines()
-        for line in content:
-            if line.startswith("#"):
-                content.remove(line)
-            elif line.startswith("-r"):
-                content.remove(line)
-                content.extend(get_requirements(line[3:]))
-    return content
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+"""
 
+from setuptools import setup
 
-requirements = get_requirements()
-
-# Version Info
-version = ""
-with open("time_str/__init__.py", encoding="utf-8") as f:
-    search = re.search(
-        r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', f.read(), re.MULTILINE
-    )
-
-    if search is not None:
-        version = search.group(1)
-
-    else:
-        raise RuntimeError("Could not grab version string")
-
-if not version:
-    raise RuntimeError("version is not set")
-
-if version.endswith(("a", "b", "rc")):
-    # append version identifier based on commit count
-    try:
-        import subprocess
-
-        with subprocess.Popen(
-            ["git", "rev-list", "--count", "HEAD"],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        ) as p:
-            out, err = p.communicate()
-        if out:
-            version += out.decode("utf-8").strip()
-        with subprocess.Popen(
-            ["git", "rev-parse", "--short", "HEAD"],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        ) as p:
-            out, err = p.communicate()
-        if out:
-            version += f"+g{out.decode('utf-8').strip()}"
-    except Exception:  # pylint: disable=broad-except
-        pass
-
-with open("README.rst", encoding="utf-8") as fh:
-    long_description = fh.read()
-
-
-packages = [
-    "time_str",
-]
-
-extras_require = {
-    "docs": get_requirements("docs/requirements.txt"),
-    "dev": get_requirements("requirements-dev.txt"),
-}
-
-extras_require["all"] = list(set(sum(extras_require.values(), [])))
-
-setup(
-    name="time_str",
-    version=version,
-    author="BobDotCom",
-    author_email="bobdotcomgt@gmail.com",
-    description="A package to convert user input into datetime.timedelta objects",
-    long_description=long_description,
-    long_description_content_type="text/x-rst",
-    url="https://github.com/BobDotCom/time_str",
-    packages=packages,
-    classifiers=[
-        "Development Status :: 5 - Production/Stable",
-        "License :: OSI Approved :: MIT License",
-        "Intended Audience :: Developers",
-        "Natural Language :: English",
-        "Operating System :: OS Independent",
-        "Programming Language :: Python :: 3.7",
-        "Programming Language :: Python :: 3.8",
-        "Programming Language :: Python :: 3.9",
-        "Programming Language :: Python :: 3.10",
-        "Topic :: Software Development :: Libraries",
-        "Topic :: Software Development :: Libraries :: Python Modules",
-        "Topic :: Utilities",
-        "Typing :: Typed",
-    ],
-    python_requires=">=3.7",
-    install_requires=requirements,
-    extras_require=extras_require,
-    license="MIT",
-    project_urls={
-        "Changelog": "https://github.com/BobDotCom/time_str/blob/main/CHANGELOG.rst",
-        "Documentation": "https://time-str.rtfd.io/",
-        "Source": "https://github.com/BobDotCom/time_str",
-        "Tracker": "https://github.com/BobDotCom/time_str/issues",
-    },
-    include_package_data=True,
-)
+if __name__ == "__main__":
+    setup()
