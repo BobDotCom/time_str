@@ -1,6 +1,5 @@
 import datetime
 import random
-from typing import Tuple
 
 import pytest
 

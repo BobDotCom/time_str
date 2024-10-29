@@ -24,14 +24,13 @@ SOFTWARE.
 import datetime
 import functools
 import re
-import sys
 
 __all__ = (
     "IntervalConverter",
     "parse_interval",
 )
 
-from typing import Dict, List, Literal, Union
+from typing import Literal, Union
 
 Unit = Literal[
     "seconds",
