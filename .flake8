@@ -1,5 +1,5 @@
 [flake8]
-min_python_version = 3.7
+min_python_version = 3.9
 ignore =
     E203, W503,
     # Incompatible with black see https://github.com/ambv/black/issues/315

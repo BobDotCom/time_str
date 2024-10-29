@@ -1,6 +1,5 @@
 import datetime
 import random
-from typing import Tuple
 
 import pytest
 
@@ -21,7 +20,7 @@ maxes = (
 )
 
 
-def make_value() -> Tuple[int, ...]:
+def make_value() -> tuple[int, ...]:
     return (
         random.randrange(0, maxes[0]),
         random.randrange(0, maxes[1]),
