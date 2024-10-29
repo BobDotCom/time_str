@@ -8,16 +8,16 @@ v1.0.0.
 
 ## [Unreleased]
 
-## Added
+### Added
 
 - Support for python 3.11 and 3.12
 
-## Fixed
+### Fixed
 
 - Fixed an issue with `IntervalConverter.datetime_precise` when the current day > amount
   of days in target month.
 
-## Removed
+### Removed
 
 - Support for python 3.7 and 3.8
 
