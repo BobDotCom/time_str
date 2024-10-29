@@ -44,6 +44,22 @@ Unit = Literal[
     "centuries",
 ]
 
+# From datetime.py
+_DAYS_IN_MONTH = [-1, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+
+
+def _is_leap(year: int) -> bool:
+    """Year -> 1 if leap year, else 0."""
+    return year % 4 == 0 and (year % 100 != 0 or year % 400 == 0)
+
+
+def _days_in_month(year: int, month: int) -> int:
+    """Year, month -> number of days in that month in that year."""
+    assert 1 <= month <= 12, month
+    if month == 2 and _is_leap(year):
+        return 29
+    return _DAYS_IN_MONTH[month]
+
 
 class IntervalConverter:
     """A converter to parse user input representing an amount of time into :class:`datetime.datetime` and
@@ -136,9 +152,17 @@ class IntervalConverter:
             months = 12
             years -= 1
 
+        years += self._now.year
+
+        if _days_in_month(int(years), int(months)) < self._now.day:
+            months += 1
+            if months == 13:
+                months = 1
+                years += 1
+
         return self._now.replace(
             month=int(months),
-            year=self._now.year + int(years),
+            year=int(years),
         ) + datetime.timedelta(
             seconds=self._data_val("seconds"),
             minutes=self._data_val("minutes"),
