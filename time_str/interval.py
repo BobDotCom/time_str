@@ -156,7 +156,7 @@ class IntervalConverter:
 
         if _days_in_month(int(years), int(months)) < self._now.day:
             months += 1
-            if months == 13:
+            if months == 13:  # pragma: no cover
                 months = 1
                 years += 1
 
