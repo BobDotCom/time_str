@@ -27,9 +27,9 @@ from importlib.metadata import PackageNotFoundError, version
 
 __all__ = ("__version__",)
 
-try:
+try:  # pragma: no cover
     __version__ = version("time_str")
-except PackageNotFoundError:
+except PackageNotFoundError:  # pragma: no cover
     # Package is not installed
     try:
         from setuptools_scm import get_version  # type: ignore[import]
