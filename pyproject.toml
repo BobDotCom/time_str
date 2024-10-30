@@ -43,12 +43,10 @@ Tracker = "https://github.com/BobDotCom/time_str/issues"
 include = ["time_str*"]
 
 [tool.setuptools.dynamic]
-#dependencies = {file = "requirements/_.txt"}
-dependencies = {file = "requirements.txt"}
+dependencies = {file = "requirements/_.txt"}
 
 [tool.setuptools.dynamic.optional-dependencies]
-#docs = {file = "requirements/docs.txt"}
-docs = {file = "docs/requirements.txt"}
+docs = {file = "requirements/docs.txt"}
 
 [tool.setuptools_scm]
 
