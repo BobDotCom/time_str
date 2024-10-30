@@ -1,0 +1,99 @@
+[build-system]
+requires = [
+    "setuptools==75.2.0",
+    "setuptools-scm==8.1.0",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "time_str"
+description = "A package to convert user input into datetime.timedelta objects"
+readme = {file = "README.rst", content-type = "text/x-rst"}
+requires-python = ">=3.9"
+#license = {file = "LICENSE"}
+authors = [
+  {name = "BobDotCom"},
+]
+#keywords = []
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "License :: OSI Approved :: MIT License",
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Utilities",
+    "Typing :: Typed",
+]
+dynamic = ["version", "dependencies", "optional-dependencies"]
+
+[project.urls]
+Homepage = "https://github.com/BobDotCom/time_str"
+Repository = "https://github.com/BobDotCom/time_str"
+Documentation = "https://time-str.readthedocs.io"
+Changelog = "https://github.com/BobDotCom/time_str/blob/main/CHANGELOG.md"
+Tracker = "https://github.com/BobDotCom/time_str/issues"
+
+[tool.setuptools.packages.find]
+include = ["time_str*"]
+
+[tool.setuptools.dynamic]
+#dependencies = {file = "requirements/_.txt"}
+dependencies = {file = "requirements.txt"}
+
+[tool.setuptools.dynamic.optional-dependencies]
+#docs = {file = "requirements/docs.txt"}
+docs = {file = "docs/requirements.txt"}
+
+[tool.setuptools_scm]
+
+[tool.black]
+target-version = ['py39']
+
+[tool.isort]
+profile = "black"
+
+[tool.mypy]
+#namespace_packages = true
+install_types = true
+strict = true
+show_error_codes = true
+#exclude = [
+#    "venv",
+#]
+
+[tool.pylint.main]
+#ignore = [
+#    "docs/conf"
+#]
+#extension-pkg-whitelist = [
+#    "pydantic",
+#    "ujson"
+#]
+py-version = "3.9"
+
+[tool.pylint.messages_control]
+enable = [
+    "bad-indentation",
+    "line-too-long"
+]
+disable = [
+#    "missing-module-docstring",
+#    "too-few-public-methods",
+    "fixme"
+]
+
+[tool.pylint.format]
+indent-string = '    '
+max-line-length = 120
+
+[tool.codespell]
+skip = "venv,.git"
+
+#[tool.pytest.ini_options]
+#asyncio_mode = "auto"

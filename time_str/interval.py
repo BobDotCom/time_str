@@ -24,19 +24,13 @@ SOFTWARE.
 import datetime
 import functools
 import re
-import sys
 
 __all__ = (
     "IntervalConverter",
     "parse_interval",
 )
 
-from typing import Dict, List, Union
-
-if sys.version_info >= (3, 8):
-    from typing import Literal
-else:  # pragma: no cover
-    from typing_extensions import Literal
+from typing import Literal, Union
 
 Unit = Literal[
     "seconds",
@@ -49,6 +43,22 @@ Unit = Literal[
     "decades",
     "centuries",
 ]
+
+# From datetime.py
+_DAYS_IN_MONTH = [-1, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+
+
+def _is_leap(year: int) -> bool:
+    """Year -> 1 if leap year, else 0."""
+    return year % 4 == 0 and (year % 100 != 0 or year % 400 == 0)
+
+
+def _days_in_month(year: int, month: int) -> int:
+    """Year, month -> number of days in that month in that year."""
+    assert 1 <= month <= 12, month
+    if month == 2 and _is_leap(year):
+        return 29
+    return _DAYS_IN_MONTH[month]
 
 
 class IntervalConverter:
@@ -63,7 +73,7 @@ class IntervalConverter:
         The maximum unit to convert to. Defaults to "centuries".
     """
 
-    _pattern: Dict[Unit, List[str]] = {
+    _pattern: dict[Unit, list[str]] = {
         "seconds": ["seconds", "second", "secs", "sec", "s"],
         "minutes": ["minutes", "minute", "mins", "min", "m"],
         "hours": ["hours", "hour", "hrs", "hr", "h"],
@@ -88,7 +98,7 @@ class IntervalConverter:
                 "Invalid unit. Must be one of: " + ", ".join(self._pattern.keys())
             )
         self._max_unit = max_unit
-        self._parsed_data: Dict[str, Union[int, float]] = {}
+        self._parsed_data: dict[str, Union[int, float]] = {}
         for unit in self._pattern:
             self._parsed_data[unit] = 0
             if unit == max_unit:
@@ -117,7 +127,7 @@ class IntervalConverter:
                         self._parsed_data[form] += float(to_add)
         self._converted_string = converted_string
 
-    @functools.lru_cache()
+    @functools.lru_cache
     def datetime_precise(self) -> datetime.datetime:
         """
         A precise converter that uses the current system time, and accounts for conditional changes such as leap years,
@@ -142,9 +152,17 @@ class IntervalConverter:
             months = 12
             years -= 1
 
+        years += self._now.year
+
+        if _days_in_month(int(years), int(months)) < self._now.day:
+            months += 1
+            if months == 13:  # pragma: no cover
+                months = 1
+                years += 1
+
         return self._now.replace(
             month=int(months),
-            year=self._now.year + int(years),
+            year=int(years),
         ) + datetime.timedelta(
             seconds=self._data_val("seconds"),
             minutes=self._data_val("minutes"),
@@ -153,7 +171,7 @@ class IntervalConverter:
             weeks=self._data_val("weeks"),
         )
 
-    @functools.lru_cache()
+    @functools.lru_cache
     def datetime_relative(self) -> datetime.datetime:
         """
         A relative converter that doesn't take leap years into account and uses rounded values for months.
@@ -173,7 +191,7 @@ class IntervalConverter:
         """
         return self._now + self.timedelta_relative()
 
-    @functools.lru_cache()
+    @functools.lru_cache
     def timedelta_precise(self) -> datetime.timedelta:
         """
         A precise converter that uses the current system time, and accounts for conditional changes such as leap years,
@@ -191,7 +209,7 @@ class IntervalConverter:
         """
         return self.datetime_precise() - self._now
 
-    @functools.lru_cache()
+    @functools.lru_cache
     def timedelta_relative(self) -> datetime.timedelta:
         """
         A relative converter that doesn't take leap years into account and uses rounded values for months.
