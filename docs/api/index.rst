@@ -1,5 +1,3 @@
-:github_url: https://github.com/BobDotCom/time_str
-
 .. currentmodule:: time_str
 
 API Reference
