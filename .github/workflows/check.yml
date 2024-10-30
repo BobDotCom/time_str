@@ -19,7 +19,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       #          cache: 'pip'
-      #          cache-dependency-path: 'requirements-dev.txt'
+      #          cache-dependency-path: 'requirements/dev.txt'
       - run: pip install codespell
       - run: codespell --ignore-words-list="groupt,nd,ot"
   bandit:
@@ -40,6 +40,6 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       #          cache: 'pip'
-      #          cache-dependency-path: 'requirements-dev.txt'
+      #          cache-dependency-path: 'requirements/dev.txt'
       - run: pip install bandit
       - run: bandit --recursive  --skip B101,B104,B105,B110,B307,B311,B404,B603,B607 .

@@ -1,4 +1,5 @@
--r requirements.txt
+-r _.txt
+-r docs.txt
 pytest==8.3.3
 pylint==3.3.1
 mypy==1.13.0
