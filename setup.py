@@ -1,5 +1,4 @@
 """Setup file."""
-
 import re
 from typing import List
 
