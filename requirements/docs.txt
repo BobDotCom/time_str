@@ -5,5 +5,5 @@ myst-parser==3.0.1
 sphinxext-opengraph==0.9.1
 sphinx-copybutton==0.5.2
 furo==2024.8.6
-sphinx-autodoc-typehints==2.3.0
+sphinx-autodoc-typehints==2.5.0
 sphinx-argparse==0.4.0
