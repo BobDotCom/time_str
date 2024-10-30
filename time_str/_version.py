@@ -32,7 +32,7 @@ try:  # pragma: no cover
 except PackageNotFoundError:  # pragma: no cover
     # Package is not installed
     try:
-        from setuptools_scm import get_version  # type: ignore[import]
+        from setuptools_scm import get_version  # type: ignore[import-untyped]
 
         __version__ = get_version()
     except ImportError:
